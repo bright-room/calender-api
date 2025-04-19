@@ -1,22 +1,16 @@
 default: .go/install
 
-fmt: go/fmt
+fmt:
+	gofumpt -l -w -extra ./
 
-lint: go/lint
+lint:
+	golangci-lint run ./...
 
-test: go/ut
+test:
+	gotestsum --junitfile report.xml --format testname -- -cover -coverprofile=coverage.out -short ./internal/...
 
 .go/install:
 	go install ./cmd/...
-
-go/fmt:
-	gofumpt -l -w -extra ./
-
-go/lint:
-	golangci-lint run ./...
-
-go/ut:
-	gotestsum --junitfile report.xml --format testname -- -cover -coverprofile=coverage.out -short ./internal/...
 
 go/mod/tidy:
 	go mod tidy
