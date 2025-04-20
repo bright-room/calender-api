@@ -1,7 +1,9 @@
 default: .go/install
 
+pre-push: fmt lint test
+
 fmt:
-	gofumpt -l -w -extra ./
+	golangci-lint fmt ./...
 
 lint:
 	golangci-lint run ./...
