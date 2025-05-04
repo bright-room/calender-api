@@ -74,7 +74,7 @@ jobs:
         id: "ut-result"
         continue-on-error: true
         working-directory: "./backend"
-        run: "gotestsum --junitfile report.xml --format testname -- -cover -coverprofile=coverage.out -short ./internal/..."
+        run: "gotestsum --junitfile report.xml --format testname -- -cover -coverprofile=coverage.out -short ./..."
 
       - name: "Check if tests failed"
         if: "steps.ut-result.outcome == 'failure'"
