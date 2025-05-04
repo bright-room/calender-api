@@ -1,0 +1,45 @@
+services:
+  db:
+    extends:
+      service: "db"
+      file: "./docker/postgres.yaml"
+    profiles:
+      - "default"
+      - "migrate"
+      - "all"
+
+  migrate-generator:
+    extends:
+      service: "migrate-generator"
+      file: "./docker/migrate.yaml"
+    volumes:
+      - "./database/migrations:/migrations"
+    profiles:
+      - "migrate"
+      - "all"
+
+  migrate-up:
+    extends:
+      service: "migrate-up"
+      file: "./docker/migrate.yaml"
+    volumes:
+      - "./database/migrations:/migrations"
+    depends_on:
+      db:
+        condition: "service_healthy"
+    profiles:
+      - "migrate"
+      - "all"
+
+  migrate-down:
+    extends:
+      service: "migrate-down"
+      file: "./docker/migrate.yaml"
+    volumes:
+      - "./database/migrations:/migrations"
+    depends_on:
+      db:
+        condition: "service_healthy"
+    profiles:
+      - "migrate"
+      - "all"
