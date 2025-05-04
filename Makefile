@@ -1,18 +1,21 @@
-default: .go/install
+DOCKER_RUN ?= docker compose --env-file .env --env-file .env.local
 
-pre-push: fmt lint test
+up:
+	$(DOCKER_RUN) --profile default up -d
 
-fmt:
-	golangci-lint fmt ./...
+down:
+	$(DOCKER_RUN) --profile default down -v
 
-lint:
-	golangci-lint run ./...
+restart: down up
 
-test:
-	gotestsum --junitfile report.xml --format testname -- -cover -coverprofile=coverage.out -short ./internal/...
+rmi:
+	$(DOCKER_RUN) --profile all down --rmi all --remove-orphans
 
-.go/install:
-	go install ./cmd/...
+db/generate/%:
+	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-generator $(@F)
 
-go/mod/tidy:
-	go mod tidy
+db/up:
+	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-up up
+
+db/down:
+	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-up down
