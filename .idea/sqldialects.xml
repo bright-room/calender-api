@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/database/migrations/000001_create_schema.down.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/migrations/000001_create_schema.up.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/migrations/000002_national_holiday.down.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/migrations/000002_national_holiday.up.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/migrations/000003_closed_days.down.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/migrations/000003_closed_days.up.sql" dialect="PostgreSQL" />
+    <file url="PROJECT" dialect="PostgreSQL" />
+  </component>
+</project>
