@@ -1,17 +1,4 @@
-DOCKER_RUN ?= docker compose --env-file .env --env-file .env.local
-
 default: .go/install
-
-up:
-	$(DOCKER_RUN) --profile default up -d
-
-down:
-	$(DOCKER_RUN) --profile default down -v
-
-restart: down up
-
-rmi:
-	$(DOCKER_RUN) --profile all down --rmi all --remove-orphans
 
 pre-push: fmt lint test
 
@@ -36,10 +23,16 @@ go/mod/tidy:
 	go mod tidy
 
 db/generate/%:
-	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-generator $(@F)
+	migrate create -ext sql -dir /migrations -seq $(@F)
 
 db/up:
-	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-up up
+	migrate \
+      -path "database/migrations" \
+      -database "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable" \
+      up
 
 db/down:
-	$(DOCKER_RUN) --profile migrate run --remove-orphans migrate-up down
+	migrate \
+	  -path "database/migrations" \
+	  -database "postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable" \
+	  down
